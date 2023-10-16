@@ -20,5 +20,5 @@ The actual USSD code facilitating user interactions is hosted on Africas Talking
 
 ## Links
 
-- [MoCha Website](https://getmocha.la/))
+- [MoCha Website](https://getmocha.la/)
 - [MoCha Pitch Deck](https://www.canva.com/design/DAFw-AhkXbk/e5Y9xFsVXfqkv0yX6vj6IQ/edit?utm_content=DAFw-AhkXbk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
