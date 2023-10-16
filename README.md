@@ -1,5 +1,7 @@
 # MoCha USSD Code 📱
 
+## ~[MoCha Product Demo](https://www.youtube.com/watch?v=P54KCk-C2j4)
+
 Welcome to MoCha's USSD Code hosted on AfricasTalking!
 
 Our USSD code is a critical part of our mission to provide financial services to emerging markets. It empowers users with basic mobile devices to access decentralized financial transactions seamlessly.
