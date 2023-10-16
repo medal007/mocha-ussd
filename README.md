@@ -25,7 +25,8 @@ To access MoCha's financial services using our USSD code, simply dial the design
 ## Links
 
 - [MoCha Website](https://getmocha.la/)
-- [MoCha API Repository](https://www.canva.com/design/DAFw-AhkXbk/e5Y9xFsVXfqkv0yX6vj6IQ/edit?utm_content=DAFw-AhkXbk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- [MoCha MoCha Pitch Deck](https://www.canva.com/design/DAFw-AhkXbk/e5Y9xFsVXfqkv0yX6vj6IQ/edit?utm_content=DAFw-AhkXbk&utm_campaign=designshare&utm_medium=link2&utm_source=sharebutton)
+- [MoCha API Repository](https://github.com/christex-foundation/mocha-api)
 
 ## Contact Us 📧
 
