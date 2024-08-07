@@ -29,15 +29,25 @@ jobs:
       - name: Install lftp
         run: sudo apt-get install lftp -y
 
-      - name: Download error logs
+      - name: List and Download error logs
         run: |
           mkdir -p logs  # Create a directory to store downloaded logs
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
           set ssl:verify-certificate no
           lcd logs
           cd /path/to/your/logs  # Change to the directory where logs are stored on the server
-          mget *error*  # Download files containing 'error' in their name
-          mget laravel.log  # Download 'laravel.log' if it exists
+          ls *error* || echo "No *error* logs found"
+          ls error_log || echo "No error_log found"
+          ls laravel.log || echo "No laravel.log found"
+          bye
+          EOF
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
+          set ssl:verify-certificate no
+          lcd logs
+          cd /path/to/your/logs
+          mget *error* || true  # Download files containing 'error' in their name if they exist
+          mget error_log || true  # Download 'error_log' if it exists
+          mget laravel.log || true  # Download 'laravel.log' if it exists
           bye
           EOF
 
