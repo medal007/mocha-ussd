@@ -25,3 +25,15 @@ jobs:
             **/.git*/**
             **/node_modules/**
             .env  # Exclude .env file from being overwritten
+
+      - name: Find error logs
+        run: |
+          mkdir -p logs  # Create a directory to store found logs
+          find /path/to/your/logs -type f \( -name '*error*' -o -name 'laravel.log' \) -exec cp {} logs/ \; || echo "No log files found"
+
+      - name: Upload logs
+        if: always()  # Ensure this step runs even if the previous step fails
+        uses: actions/upload-artifact@v3
+        with:
+          name: server-logs
+          path: logs/
