@@ -32,10 +32,12 @@ jobs:
       - name: List and Download error logs
         run: |
           mkdir -p logs  # Create a directory to store downloaded logs
-          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF || true
           set ssl:verify-certificate no
           lcd logs
-          find / -type f \( -name '*error*' -o -name 'error_log' -o -name 'laravel.log' \) -exec mget {} \; || true
+          mget -c /*error* || true
+          mget -c /error_log || true
+          mget -c /laravel.log || true
           bye
           EOF
 
@@ -48,4 +50,4 @@ jobs:
         with:
           name: error-logs
           path: logs/
-          if-no-files-found: warn  # You can set to 'ignore' or 'error' based on your preference
+          if-no-files-found: ignore  # Continue gracefully if no files are found
