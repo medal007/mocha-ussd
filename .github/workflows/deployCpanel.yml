@@ -13,32 +13,29 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: 🚚 Get latest code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4  # Use the latest stable version
 
       - name: 📂 Sync files
-        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5  # Use the latest version
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          protocol: ftps
+          protocol: ftps  # Use FTPS for secure file transfer
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            .env
+            .env  # Exclude .env file from being overwritten
 
-  check-logs:
-    name: Check and Upload Error Logs
-    runs-on: ubuntu-latest
-    steps:
       - name: Install lftp
         run: sudo apt-get install lftp -y
 
       - name: List and Download error logs
         run: |
-          mkdir -p logs
+          mkdir -p logs  # Create a directory to store downloaded logs
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF || true
+          set ssl:verify-certificate no
           lcd logs
           mget -c /*error* || true
           mget -c /error_log || true
@@ -50,9 +47,9 @@ jobs:
         run: ls -l logs || echo "No files downloaded"
 
       - name: Upload logs
-        if: always()
+        if: always()  # Ensure this step runs even if the previous step fails
         uses: actions/upload-artifact@v4
         with:
           name: error-logs
           path: logs/
-          if-no-files-found: ignore
+          if-no-files-found: ignore  # Continue gracefully if no files are found
