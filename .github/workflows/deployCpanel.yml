@@ -1,4 +1,4 @@
-name: Deploy to cPanel
+name: 🚀 Deploy to Cpanel
 
 on:
   push:
@@ -6,17 +6,33 @@ on:
       - main  # Adjust the branch name if necessary
 
 jobs:
-  ftp-deploy:
+  web-deploy:
+    name: 🎉 Deploy
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4  # Update to the latest compatible version
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4
 
-    - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.3.1  # Update to the latest version
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        local-dir: ./  # Adjust if your code is in a subdirectory
-        server-dir: /home/ngslccor/yudomot.techengood.com/  # Your specific path
+      - name: Use Node.js 16
+        uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      
+      - name: 🔨 Build Project
+        run: |
+          npm install
+          npm run build
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./  # Adjust if your code is in a subdirectory
+          server-dir: /home/ngslccor/yudomot.techengood.com/  # Your specific path
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env  # Exclude .env file from being overwritten
