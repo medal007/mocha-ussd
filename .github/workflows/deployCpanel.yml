@@ -33,6 +33,7 @@ jobs:
         run: |
           mkdir -p logs  # Create a directory to store downloaded logs
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
+          set ssl:verify-certificate no
           lcd logs
           cd /path/to/your/logs  # Change to the directory where logs are stored on the server
           mget *error*  # Download files containing 'error' in their name
