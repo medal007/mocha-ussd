@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3  # Updated to use Node16 compatible version
+      uses: actions/checkout@v4  # Update to the latest compatible version
 
     - name: FTP Deploy
-      uses: SamKirkland/FTP-Deploy-Action@4.3.0  # Ensure this is the latest version
+      uses: SamKirkland/FTP-Deploy-Action@4.3.1  # Update to the latest version
       with:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
