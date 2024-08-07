@@ -1,0 +1,22 @@
+name: Deploy to cPanel
+
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name if necessary
+
+jobs:
+  ftp-deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: FTP Deploy
+      uses: SamKirkland/FTP-Deploy-Action@4.1.0
+      with:
+        ftp-server: ${{ secrets.FTP_SERVER }}
+        ftp-username: ${{ secrets.FTP_USERNAME }}
+        ftp-password: ${{ secrets.FTP_PASSWORD }}
+        local-dir: ./  # Adjust if your code is in a subdirectory
+        server-dir: /home/ngslccor/yudomot.techengood.com/  # Your specific path
