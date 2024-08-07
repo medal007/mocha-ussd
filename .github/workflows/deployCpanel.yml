@@ -10,28 +10,23 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4  # Use the latest stable version
+        uses: actions/checkout@v4
 
       - name: Use Node.js 20
-        uses: actions/setup-node@v3  # Use the latest version for Node.js setup
+        uses: actions/setup-node@v3
         with:
           node-version: '20'
-      
-      - name: Install dependencies and build
-        run: |
-          npm install
-          npm run build  # Adjust this if your project does not need a build step
 
       - name: FTP Deploy
-        uses: SamKirkland/FTP-Deploy-Action@4.3.1  # Ensure this is the latest version
+        uses: SamKirkland/FTP-Deploy-Action@4.3.1
         with:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./  # Adjust if your code is in a subdirectory
-          server-dir: /home/ngslccor/yudomot.techengood.com/  # Your specific path
+          server-dir: /home/ngslccor/yudomot.techengood.com/
           exclude: |
             **/.git*
             **/.git*/**
             **/node_modules/**
-            .env  # Exclude .env file from being overwritten
+            .env
