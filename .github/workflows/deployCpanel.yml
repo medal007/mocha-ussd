@@ -35,21 +35,12 @@ jobs:
           lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
           set ssl:verify-certificate no
           lcd logs
-          cd /path/to/your/logs  # Change to the directory where logs are stored on the server
-          ls *error* || echo "No *error* logs found"
-          ls error_log || echo "No error_log found"
-          ls laravel.log || echo "No laravel.log found"
+          find / -type f \( -name '*error*' -o -name 'error_log' -o -name 'laravel.log' \) -exec mget {} \; || true
           bye
           EOF
-          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF
-          set ssl:verify-certificate no
-          lcd logs
-          cd /path/to/your/logs
-          mget *error* || true  # Download files containing 'error' in their name if they exist
-          mget error_log || true  # Download 'error_log' if it exists
-          mget laravel.log || true  # Download 'laravel.log' if it exists
-          bye
-          EOF
+
+      - name: Show downloaded files
+        run: ls -l logs || echo "No files downloaded"
 
       - name: Upload logs
         if: always()  # Ensure this step runs even if the previous step fails
