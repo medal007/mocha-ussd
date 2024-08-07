@@ -20,8 +20,6 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps  # Use FTPS for secure file transfer
-          local-dir: ./  # Adjust if your code is in a subdirectory
-          server-dir: /home/ngslccor/yudomot.techengood.com/  # Your specific path
           exclude: |
             **/.git*
             **/.git*/**
