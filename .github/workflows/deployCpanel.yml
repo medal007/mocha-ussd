@@ -30,10 +30,11 @@ jobs:
         run: |
           mkdir -p logs  # Create a directory to store found logs
           find /path/to/your/logs -type f \( -name '*error*' -o -name 'laravel.log' \) -exec cp {} logs/ \; || echo "No log files found"
-
+          
       - name: Upload logs
         if: always()  # Ensure this step runs even if the previous step fails
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: server-logs
+          name: error-logs
           path: logs/
+          if-no-files-found: warn  # You can set to 'ignore' or 'error' based on your preference
