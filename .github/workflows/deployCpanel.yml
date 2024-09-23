@@ -1,1 +1,60 @@
+name: Deploy to cPanel
 
+on:
+  push:
+    branches:
+      - main  # Adjust the branch name if necessary
+  schedule:
+    - cron: '*/5 * * * *'  # Runs every 5 minutes
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🚚 Get latest code
+        uses: actions/checkout@v4  # Get the latest code from the repository
+
+      - name: 📂 Sync files
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          protocol: ftps
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            .env
+
+  check-logs:
+    name: Check and Upload Error Logs
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install lftp
+        run: sudo apt-get install lftp -y
+
+      - name: List and Download error logs
+        run: |
+          mkdir -p logs
+          lftp -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }} <<EOF || true
+          set ssl:verify-certificate no
+          lcd logs
+          mget -c /*error* || true
+          mget -c /error_log || true
+          mget -c /laravel.log || true
+          bye
+          EOF
+
+      - name: Show downloaded files
+        run: ls -l logs || echo "No files downloaded"
+
+      - name: Upload logs
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: error-logs
+          path: logs/
+          if-no-files-found: ignore
